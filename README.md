@@ -1,77 +1,36 @@
-# Astro Starter Kit: Blog
+# blog
 
-```sh
-npm create astro@latest -- --template blog
+Astro で作ったブログです。`main` ブランチに変更が入ると、GitHub Actions が自動でビルドして Cloudflare Workers に公開します。
+
+## 記事の追加
+
+`src/content/blog/` に Markdown ファイル(`.md`)を1つ置くと、記事が1本増えます。ファイル名がそのまま URL になります(例: `hello.md` → `/blog/hello/`)。ファイル名は半角英数字とハイフンにしてください。
+
+ファイルの先頭には、次の4行を `---` で囲んで書きます。
+
+```markdown
+---
+title: '記事のタイトル'
+description: '一覧や検索結果に出る短い説明'
+pubDate: '2026-10-06'
+---
+
+ここから本文を書きます。
 ```
 
-<!-- ASTRO:REMOVE:START -->
+`pubDate` は公開日です。新しい日付の記事ほど上に並びます。
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
+## 公開のしくみ
 
-<!-- ASTRO:REMOVE:END -->
+- `.github/workflows/deploy.yml` が `main` への push のたびに `npx astro build` と `wrangler deploy` を実行します。
+- Cloudflare の API トークンを、リポジトリの Settings → Secrets and variables → Actions に `CLOUDFLARE_API_TOKEN` という名前で登録しておく必要があります。登録されていない間は、公開の手順をとばして終了します。
+- 公開先の Worker の名前は `wrangler.jsonc` の `name`(`blog`)です。
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 手元で動かす場合
 
-<!-- ASTRO:REMOVE:START -->
-
-![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
-
-<!-- ASTRO:REMOVE:END -->
-
-Features:
-
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and Open Graph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+| コマンド | 内容 |
+| :-- | :-- |
+| `npm install` | 必要なパッケージを入れる |
+| `npm run dev` | 確認用サーバーを `localhost:4321` で起動する |
+| `npm run build` | `./dist/` に公開用のファイルを作る |
+| `npx wrangler dev` | ビルド結果を Cloudflare と同じしくみで確認する |

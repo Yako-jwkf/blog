@@ -1,6 +1,6 @@
 ---
 title: 'はじめての記事'
-description: 'iPad から書いたテスト記事です'
+description: 'iPad から書いた最初の記事です'
 pubDate: '2026-10-06'
 ---
 
