@@ -1,0 +1,10 @@
+- title: ホーム
+  url: /
+- title: タグ
+  url: /tags/
+- title: カテゴリ
+  url: /categories/
+- title: 検索
+  url: /search/
+- title: 紹介
+  url: /about/

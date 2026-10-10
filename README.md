@@ -1,36 +1,21 @@
 # blog
 
-Astro で作ったブログです。`main` ブランチに変更が入ると、GitHub Actions が自動でビルドして Cloudflare Workers に公開します。
+GitHub Pages で公開しているブログです。記事は Markdown で `_posts/` に置き、`main` に入ると GitHub Actions が Jekyll でビルド・検査して公開します。
 
-## 記事の追加
+- 公開先: https://yako-jwkf.github.io/blog/
+- 記事の書き方・公開のしくみ・元に戻す方法: [admin.md](admin.md)
 
-`src/content/blog/` に Markdown ファイル(`.md`)を1つ置くと、記事が1本増えます。ファイル名がそのまま URL になります(例: `hello.md` → `/blog/hello/`)。ファイル名は半角英数字とハイフンにしてください。
+## 構成
 
-ファイルの先頭には、次の4行を `---` で囲んで書きます。
+| 場所 | 内容 |
+| --- | --- |
+| `_posts/` | 記事の原本 |
+| `_layouts/`, `_includes/`, `_data/` | ページの共通部分とメニュー |
+| `assets/` | CSS・JavaScript・画像 |
+| `index.html`, `tags.html`, `categories.html`, `search.html`, `about.md`, `404.html` | 各ページ |
+| `search.json`, `feed.xml`, `sitemap.xml` | 検索用データ・RSS 2.0・サイトマップ(ビルド時に生成) |
+| `scripts/` | 記事の検査とビルド結果の検査(Ruby の標準ライブラリのみ) |
+| `test/` | 検査のテストと、特殊な文字を含むテスト用記事 |
+| `.github/workflows/` | 公開(`pages.yml`)と検査(`article-validation.yml`) |
 
-```markdown
----
-title: '記事のタイトル'
-description: '一覧や検索結果に出る短い説明'
-pubDate: '2026-10-06'
----
-
-ここから本文を書きます。
-```
-
-`pubDate` は公開日です。新しい日付の記事ほど上に並びます。
-
-## 公開のしくみ
-
-- `.github/workflows/deploy.yml` が `main` への push のたびに `npx astro build` と `wrangler deploy` を実行します。
-- Cloudflare の API トークンを、リポジトリの Settings → Secrets and variables → Actions に `CLOUDFLARE_API_TOKEN` という名前で登録しておく必要があります。登録されていない間は、公開の手順をとばして終了します。
-- 公開先の Worker の名前は `wrangler.jsonc` の `name`(`blog`)です。
-
-## 手元で動かす場合
-
-| コマンド | 内容 |
-| :-- | :-- |
-| `npm install` | 必要なパッケージを入れる |
-| `npm run dev` | 確認用サーバーを `localhost:4321` で起動する |
-| `npm run build` | `./dist/` に公開用のファイルを作る |
-| `npx wrangler dev` | ビルド結果を Cloudflare と同じしくみで確認する |
+外部の CDN・フォント・JavaScript ライブラリは使っていません。使う GitHub Actions は GitHub 公式の `actions/*` だけです。

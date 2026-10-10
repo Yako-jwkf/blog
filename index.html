@@ -1,0 +1,24 @@
+---
+layout: default
+---
+<section class="intro">
+  <p>{{ site.description | escape }}</p>
+</section>
+
+<h2>記事</h2>
+{%- if site.posts.size > 0 %}
+<ul class="post-summaries">
+  {%- for post in site.posts %}
+  <li class="post-summary">
+    <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y年%-m月%-d日" }}</time>
+    <h3><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
+    {%- if post.description %}
+    <p>{{ post.description | escape }}</p>
+    {%- endif %}
+    {% include post-terms.html post=post %}
+  </li>
+  {%- endfor %}
+</ul>
+{%- else %}
+<p>まだ記事はありません。</p>
+{%- endif %}

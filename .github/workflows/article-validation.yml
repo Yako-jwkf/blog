@@ -1,0 +1,49 @@
+name: Validate articles
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Validate posts
+        run: ruby scripts/validate_posts.rb
+
+      - name: Build site
+        uses: actions/jekyll-build-pages@44a6e6beabd48582f863aeeb6cb2151cc1716697 # v1.0.13
+        with:
+          source: ./
+          destination: ./_site
+
+      - name: Check site and run tests
+        run: |
+          ruby scripts/check_site.rb _site
+          ruby test/run_tests.rb _site
+
+      # 特殊な文字を含む記事と下書きを足したサイトでも壊れないかを確かめる
+      - name: Prepare fixture site
+        run: ruby test/prepare_fixture_site.rb _fixture_src
+
+      - name: Build fixture site
+        uses: actions/jekyll-build-pages@44a6e6beabd48582f863aeeb6cb2151cc1716697 # v1.0.13
+        with:
+          source: ./_fixture_src
+          destination: ./_fixture_site
+
+      - name: Check fixture site
+        run: |
+          ruby scripts/validate_posts.rb _fixture_src
+          ruby scripts/check_site.rb _fixture_site _fixture_src
+          ruby test/check_fixture_site.rb _fixture_site

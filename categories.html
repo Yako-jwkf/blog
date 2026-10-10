@@ -1,0 +1,30 @@
+---
+layout: page
+title: カテゴリ
+permalink: /categories/
+---
+{%- assign terms = site.categories | sort %}
+{%- if terms.size > 0 %}
+<ul class="term-index">
+  {%- for term in terms %}
+  <li><a href="#category-{{ term[0] | slugify }}">{{ term[0] | escape }}</a> ({{ term[1].size }})</li>
+  {%- endfor %}
+</ul>
+{%- for term in terms %}
+<section class="term-section" id="category-{{ term[0] | slugify }}">
+  <h2>{{ term[0] | escape }}</h2>
+  {%- assign term_posts = term[1] %}
+  {% include post-list.html posts=term_posts %}
+</section>
+{%- endfor %}
+{%- else %}
+<p>カテゴリのある記事はまだありません。</p>
+{%- endif %}
+
+{%- assign uncategorized = site.posts | where_exp: "post", "post.categories.size == 0" %}
+{%- if uncategorized.size > 0 %}
+<section class="term-section" id="category-none">
+  <h2>カテゴリのない記事</h2>
+  {% include post-list.html posts=uncategorized %}
+</section>
+{%- endif %}

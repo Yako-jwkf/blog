@@ -1,0 +1,30 @@
+---
+layout: page
+title: タグ
+permalink: /tags/
+---
+{%- assign tags = site.tags | sort %}
+{%- if tags.size > 0 %}
+<ul class="term-index">
+  {%- for tag in tags %}
+  <li><a href="#tag-{{ tag[0] | slugify }}">#{{ tag[0] | escape }}</a> ({{ tag[1].size }})</li>
+  {%- endfor %}
+</ul>
+{%- for tag in tags %}
+<section class="term-section" id="tag-{{ tag[0] | slugify }}">
+  <h2>#{{ tag[0] | escape }}</h2>
+  {%- assign term_posts = tag[1] %}
+  {% include post-list.html posts=term_posts %}
+</section>
+{%- endfor %}
+{%- else %}
+<p>タグの付いた記事はまだありません。</p>
+{%- endif %}
+
+{%- assign untagged = site.posts | where_exp: "post", "post.tags.size == 0" %}
+{%- if untagged.size > 0 %}
+<section class="term-section" id="tag-none">
+  <h2>タグのない記事</h2>
+  {% include post-list.html posts=untagged %}
+</section>
+{%- endif %}
