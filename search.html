@@ -1,0 +1,14 @@
+---
+layout: page
+title: 検索
+permalink: /search/
+---
+<form class="search-form" action="{{ '/search/' | relative_url }}" method="get" role="search">
+  <label for="search-input">キーワード</label>
+  <input id="search-input" name="q" type="search" autocomplete="off" placeholder="タイトル・本文・タグ・カテゴリから探す">
+  <button type="submit">検索</button>
+</form>
+<p id="search-status" class="search-status" aria-live="polite"></p>
+<ul id="search-results" class="post-list"></ul>
+<noscript><p>検索には JavaScript が必要です。<a href="{{ '/tags/' | relative_url }}">タグ</a>や<a href="{{ '/categories/' | relative_url }}">カテゴリ</a>からも記事を探せます。</p></noscript>
+<script src="{{ '/assets/js/search.js' | relative_url }}" data-index="{{ '/search.json' | relative_url }}" defer></script>

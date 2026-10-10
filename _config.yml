@@ -1,0 +1,44 @@
+title: "My Blog"
+description: "iPad から書いているブログです。"
+lang: ja
+timezone: Asia/Tokyo
+
+# 公開先: https://yako-jwkf.github.io/blog/
+url: "https://yako-jwkf.github.io"
+baseurl: "/blog"
+
+# このサイトのリポジトリ(GitHub Pages の既定プラグイン jekyll-github-metadata が使う)
+repository: "Yako-jwkf/blog"
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+
+permalink: /posts/:year/:month/:day/:title/
+
+# GitHub Pages の既定プラグイン以外は追加しない
+plugins: []
+
+# GitHub Pages が自動で付ける既定テーマ(primer)を使わない
+theme: null
+
+# RSS に載せる件数と、本文全体を載せるかどうか
+feed_limit: 20
+feed_full_content: false
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+
+exclude:
+  - README.md
+  - admin.md
+  - scripts/
+  - test/
+  - Gemfile
+  - Gemfile.lock
+  - vendor/

@@ -1,0 +1,11 @@
+{%- assign terms_post = include.post -%}
+{%- if terms_post.categories.size > 0 or terms_post.tags.size > 0 -%}
+<ul class="post-terms">
+  {%- for category in terms_post.categories %}
+  <li><a class="term term-category" href="{{ '/categories/' | relative_url }}#category-{{ category | slugify }}">{{ category | escape }}</a></li>
+  {%- endfor %}
+  {%- for tag in terms_post.tags %}
+  <li><a class="term term-tag" href="{{ '/tags/' | relative_url }}#tag-{{ tag | slugify }}">#{{ tag | escape }}</a></li>
+  {%- endfor %}
+</ul>
+{%- endif -%}
